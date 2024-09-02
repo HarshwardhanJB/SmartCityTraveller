@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container" id="my_form">
+        <h1><b>Add Transportation</b></h1>
+        <form>
+            <div class="form-group">
+                <label for="tran-type" style="font-size: medium; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">Type of Transportation</label><br>
+                <input type="radio" name="tran-type" id="b1" />  Car<br>
+                <input type="radio" name="tran-type" id="b1"/>  Mini Bus<br>
+                <input type="radio" name="tran-type" id="b1"/>  Scooty<br>
+                <input type="radio" name="tran-type" id="b1"/>  Bike<br>
+            </div>
+            <div class="form-group">
+                <label for="vin" style="font-size: medium; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">Vehicle Identification Number</label>
+                <input type="number" id="vin" class="form-control" placeholder="VIN"/>
+            </div>
+            <div class="form-group">
+                <label for="vm" style="font-size: medium; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">Vehicle Model</label>
+                <input type="text" id="vm" class="form-control" placeholder="Vehicle model"/>
+            </div>
+            <div class="form-group">
+                <label for="lpn" style="font-size: medium; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">License Plate Number</label>
+                <input type="number" id="lpn" class="form-control" placeholder="LicenseNumber"/>
+            </div>
+            <div class="form-group">
+                <label for="image" style="font-size: medium; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">Upload Images</label>
+                <input type="file" id="image" class="form-control" multiple="multiple"/>
+            </div>
+            <button type="submit" class="btn btn-primary" onclick="addTransport()">Add</button>
+            <button type="reset" class="btn btn-primary">Reset</button>
+
+        </form>
+
+    </div>
+	
+	<script>
+		function addTransport(){
+			const type = document.querySelector("input[name='tran-type']:checked");
+			const VIN = document.getElementById("vin");
+			const vehiModel = document.getElementById("vm");
+			const licePlateNo = document.getElementById("lpn");
+			const img = document.getElementById("image");
+			
+			if(type=='' || VIN=='' || vehiModel=='' || licePlateNo=='' || img=='')
+			{
+				alert("all fields are required...!");
+			}
+			else{
+				fetch("/api/Tsave",{
+				method: "POST",
+				headers:{'content-type':'application/json'},
+				body: JSON.stringify(
+				{
+					type,
+					VIN,
+					vehiModel,
+					licePlateNo,
+					img
+				}
+				)
+				})
+				.then(response => response.json())
+				.then(data => {
+				console.log("success");
+				alert("Data Saved Successfully");
+				})
+				.catch((error) => {
+				console.error("Error:",error);
+				});
+			}
+		}
+	</script>
+    
+</body>
+</html>

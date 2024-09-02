@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+     
+</head>
+<body>
+    <div class="container" id="my_form">
+        <h1><b>Add Hotel</b></h1>
+        <form>
+            <div class="form-group">
+                <label for="hotel-name" style="font-size: medium; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">Hotel Name</label>
+                <input type="text" id="hotel-name" class="form-control" placeholder="hotelName"/>
+            </div>
+            <div class="form-group">
+                <label for="address" style="font-size: medium; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">Hotel Address</label>
+                <input type="text" id="address" class="form-control" placeholder="address"/>
+            </div>
+            <div class="form-group">
+                <label for="discription" style="font-size: medium; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">Hotel Discription</label>
+                <input type="text" id="discription" class="form-control" placeholder="discription"/>
+            </div>
+            <div class="form-group">
+                <label for="room-rate" style="font-size: medium; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">Room Rate</label>
+                <input type="number" id="room-rate" class="form-control" placeholder="roomRate"/>
+            </div>
+            <div class="form-group">
+                <label for="hotel-image" style="font-size: medium; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">Hotel Image</label>
+                <input type="file" id="hotel-image" class="form-control" multiple="multiple"/>
+            </div>
+            <button type="submit" class="btn btn-primary" >Add Hotel</button>
+            <button type="reset" class="btn btn-primary">Reset Hotel</button>
+
+        </form>
+
+    </div>
+    <div id="added successfully" style="display: none;">
+        <p>
+            Hotel added successfully...!!
+            Thanks for filling this form..!
+        </p>
+        <button data-dismiss="true" class="close-button">Close</button>
+    </div>
+    <script>
+            const hotelName = document.getElementById('hotel-name').value;
+            const address = document.getElementById('address').value;
+            const description = document.getElementById('discription').value;
+            const roomRate = document.getElementById('room-rate').value;
+            const hotelImage = document.getElementById('hotel-image').files;
+            
+			if(hotelName=='' || address=='' || description=='' || roomRate=='' || hotelImage=='')
+			{
+				alert("name or address or descirption or roomRating or Images is requried..!");
+			}
+			else{
+				fetch("/api/Hsave",{
+				method: "POST",
+				headers:{'content-type':'application/json'},
+				body: JSON.stringify(
+				{
+					hotelName,
+					address,
+					description,
+					roomRate,
+					hotelImage
+				}
+				)
+				})
+				.then(response => response.json())
+				.then(data => {
+				console.log("success");
+				alert("Data Saved Successfully");
+				})
+				.catch((error) => {
+				console.error("Error:",error);
+				});
+			}
+    </script>
+</body>
+</html>
