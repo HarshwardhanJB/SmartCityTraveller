@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+	<link rel="stylesheet" href="./assets/css/style.css">
+	<link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+</head>
+<body>
+	
+	<ul class="nav nav-tabs">		 
+		<li role="presentation"><a th:href="@{/}">Home</a></li>
+		<li role="presentation"><a  href="#" onclick="openForm()">Login</a></li>
+		<li role="presentation"><a th:href="@{about}">About us</a></li>
+	</ul>
+	
+	<!-- The video -->
+		<video autoplay muted loop id="myVideo" >
+				  <source src="./assets/imgs/back1.mp4" type="video/mp4">
+		</video>
+
+	<!--Login Form-->
+	<div class="form-cont">
+		
+		<div class="form" id="myForm" style="display: none;"> 
+			<div class="close"><button type="button" class="btn cancel" onclick="closeForm()">Close</button></div>
+		        <label style="font-size: 50px;">Login</label><br>
+				 
+		        <form method="post" action="api/save"> 
+					<label>Username : </label><br>
+		        	<input type="text" id="name1" placeholder="Email"><span style="color: red;" aria-placeholder="email/mobile">*</span> <br>
+		        	<label>Password : </label> <br>
+		        	<input type="password" id="pass2" placeholder="Password"><span style="color: red;">*</span> <br>
+		        	<input type="checkbox" onclick="showpass()"><span id="span">show password</span><br>
+		        	<input type="button" value="Login" id="login" onclick="validLog()"><br>
+		        	<a href="#" onclick="closeForm(); openRegister();">register</a><span> , if don't have an account...</span>
+		        </form> 
+		  </div> 
+
+	  
+	  
+		  <!--Registration Form-->
+		  <div class="form" style="padding: 50px; margin-top: 10px; line-height: 30px;" id="myRegForm"> 
+		      <label style="font-size: 50px; line-height: 40px;">REGISTER</label>
+			  <div class="close"><button type="button" class="btn cancel" onclick="closeRegister()">Close</button> </div>
+		      <form > 
+		  	 	<label>Name : </label> <br>
+		    		<input type="text" id="name" placeholder="Your Name"><span style="color: red;">*</span>
+		  	    <br> 
+		  	    <label>Email : </label> <br>
+		  	    <input type="email" id="email" placeholder="Email"><span style="color: red;">*</span> 
+		  	    <br> 
+		  	    <label>Mobile No. : </label> <br>
+		  	    <input type="number" id="mobile" placeholder="Mobile"> 
+		  	    <br> 
+		  	    <label>Role : </label> <br>
+		  	    <input type="radio" name="role" value="user">User
+		  	    <input type="radio" name="role" value="vendor">Vendor
+		  	    <br> 
+		  	    <label>Password: </label> <br>
+		  	    <input type="password" id="pass" placeholder="Password"> <span style="color: red;">*</span>
+		  	    <br> 
+		  	    <label>Confirm Password : </label> <br>
+		  	    <input type="password" id="pass1" placeholder="Connfirm Password"><span style="color: red;">*</span> 
+		  	    <br>
+		  	    <input type="checkbox" onclick="showpass()"><span id="span">show password</span><br>
+		        <input type="submit" value="Register" id="register" onclick="validreg()">
+		     </form> 
+	    	</div> 
+		</div> 
+	</div>
+		
+		<!--Footer-->
+		<footer>
+		      <div class="container">
+		        <div class="apps">
+		          <div class="applogo">
+		            <p>
+		              Download Paytm App <br />
+		              to Pay from anywhere
+		            </p>
+		            <img src="./images/downloadApple.svg" />
+		            <img src="./images/downloadGoogle.svg" />
+		          </div>
+
+		          <div class="appicons">
+		            <img src="./images/twitter.svg" />
+		            <img src="./images/instagram.svg" />
+		            <img src="./images/facebook.svg" />
+		          </div>
+		        </div>
+		    </footer>
+
+		<!--Registration js-->
+	    <script>
+			function openRegister() {
+								  document.getElementById("myRegForm").style.display = "block";
+								}
+
+			function closeRegister() {
+								  document.getElementById("myRegForm").style.display = "none";
+								}
+	      function validreg()
+	      {
+			const name = document.getElementById("name").value;
+			const email = document.getElementById("email").value;
+			const mobile = document.getElementById("mobile").value;
+			const pass = document.getElementById("pass").value;
+			const pass1 = document.getElementById("pass1").value;
+			const role = document.querySelector("input[name='role']:checked").value;
+			console.log(role);
+	          if(name=='' || email=="" || pass=="")
+	          {
+	              alert("Username or email or password is required");
+	          }
+	          else if(pass != pass1)
+	          {
+	            alert("password and confirm password must be same")
+	          }
+			  else
+			  {
+				//handle API
+				if(role=="user"){
+				fetch("/api/save",{
+				method: "POST",
+				headers:{'content-type':'application/json'},
+				body: JSON.stringify(
+				{
+					name,
+					email,
+					mobile,
+					pass,
+					pass1,
+					role
+				}
+				)
+				})
+				.then(response => response.json())
+				.then(data => {
+				console.log("success");
+				alert("User Saved Successfully");
+				})
+				.catch((error) => {
+				console.error("Error:",error);
+				});
+				}
+				else{
+					fetch("/api/Vsave",{
+					method: "POST",
+					headers:{'content-type':'application/json'},
+					body: JSON.stringify(
+					{
+						name,
+						email,
+						mobile,
+						pass,
+						pass1,
+						role
+					}
+					)
+					})
+					.then(response => response.json())
+					.then(data => {
+					console.log("success");
+					alert("User Saved Successfully");
+					})
+					.catch((error) => {
+					console.error("Error:",error);
+					});
+					}
+				}
+			}
+
+	      function showpass()
+	          {
+	              var pass= document.getElementById("pass");
+	              var pass1= document.getElementById("pass1");
+	              var sp = document.getElementById("span")
+	              if(pass.type == "password" && pass1.type == "password")
+	              {
+	                  pass.type = "text";
+	                  pass1.type = "text";
+	              }
+	              else{
+	                  pass.type = "password";
+	                  pass1.type = "password";
+	              }
+	          } 			
+			  		
+	  </script>
+	   
+	 <!-- Login JS-->
+	    <script>
+			function openForm() {
+					  document.getElementById("myForm").style.display = "block";
+					}
+
+			function closeForm() {
+					  document.getElementById("myForm").style.display = "none";
+					}
+	        function validLog()
+	        {
+				const email = document.getElementById("name1").value;
+				const pass = document.getElementById("pass2").value;
+	            if(email=='')
+	            {
+	                alert("Username is required");
+	                user.style.borderColor="red"
+	            }
+	            else if(pass=="")
+	            {
+	                alert("Password is required");
+	                pass.style.borderColor="red"
+	            }
+				else{
+					//handle API
+					fetch("/login",{
+					method: "GET",
+					headers:{'content-type':'application/json'},
+					body: JSON.stringify(
+					{
+						email,
+						pass,
+					}
+					)
+					})
+					.then(response => response.json())
+					.then(data => {
+					console.log("success");
+					window.location.replace("AddMoreDetails.html");
+					})
+					.catch((error) => {
+					console.error("Error:",error);
+					});
+				}
+	        }
+	        
+	    </script>
+    
+</body>
+</html>

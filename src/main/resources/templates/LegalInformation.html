@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./assets/css/legalstyle.css">
+    
+</head>
+<body>
+    <div class="main">
+        <section class="signup">
+            <h2 class="form-title">Legal Information</h2>
+            <div class="container">
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <h4 class="form-title">Legal details</h4>
+                        <form method="" action="" class="register-form"
+							id="register-form">
+                            <div class="form-group">
+                                <label for="name">
+                                    <b style="font-size: medium; font-size: large;">Legal Entity Type</b>
+                                </label><br>
+                                <select name="names" id="names" style="height: 25px; width: 200px;">
+                                    <option value="sole proprietorship">Sole Proprirtorship</option>
+                                    <option value="partnership">Partnership</option>
+                                    <option value="Corporation">Corporation</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="name" style="font-size: medium; font-size: large;">
+                                    <b>Insured</b>
+                                </label><br>
+                            <label for="yes" style=" width: 100px; height: 25px; font-size:18px;">
+                                <input type="radio"
+                                id="no" value="yes" name="no">
+                                <b>Yes</b>
+                            </label>
+                            <label for="no" style=" width: 100px; height: 25px; font-size: 18px;">
+                                <input type="radio" 
+                                id="no" value="no" name="no">
+                                <b>No</b>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" style="font-size: medium; font-size: large;">
+                                <b>Do you have any pending legal actions or disputes?</b>
+                            </label><br>
+                        <label for="yes" style=" width: 100px; height: 25px; font-size:18px;">
+                            <input type="radio"
+                            id="pending" value="yes" name="pending">
+                            <b>Yes</b>
+                        </label>
+                        <label for="no" style=" width: 100px; height: 25px; font-size: 18px;">
+                            <input type="radio" 
+                            id="pending" value="no" name="pending">
+                            <b>No</b>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="name" style="font-size: medium; font-size: large;">
+                            <b>Licensed</b>
+                        </label><br>
+                    <label for="yes" style=" width: 100px; height: 25px; font-size:18px;">
+                        <input type="radio"
+                        id="license" value="yes" name="license">
+                        <b>Yes</b>
+                    </label>
+                    <label for="no" style=" width: 100px; height: 25px; font-size: 18px;">
+                        <input type="radio" 
+                        id="license" value="no" name="license">
+                        <b>No</b>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="name" style="font-size: medium; font-size: large;">
+                        <b>License No.</b>
+                    </label><br>
+                    <input type="number" value="number" name="lice_number" id="lice_number"/>
+                </div>
+                <div class="form-group form-button">
+                    <input type="submit"  id="signup"
+                        class="form-submit" value="Save" onclick="saveInfo()"/>
+                        <input type="submit" name="reset" id="reset"
+                        class="form-submit" value="Reset"/>
+                </div>
+				
+				<script>
+					function saveInfo()
+					{
+						const insured = document.querySelector("input[name='no']:checked");
+						const pending = document.querySelector("input[name='pending']:checked");
+						const license = document.querySelector("input[name='license']:checked");
+						const liceNo = document.getElementById("lice_number");
+						const type = document.getElementById("names").value;
+						const typeValue =type.options[type.selectedIndex].text;
+						
+						if(typeValue=='' || insured=='' || pending=='' || license=='' || liceNo==''  )
+						{
+							alert("All fields are required..!");
+						}
+						else{
+							fetch("/api/Infosave",{
+							method: "POST",
+							headers:{'content-type':'application/json'},
+							body: JSON.stringify(
+							{
+								typeValue,
+								insured,
+								pending,
+								license,
+								liceNo
+							}
+							)
+							})
+							.then(response => response.json())
+							.then(data => {
+							console.log("success");
+							alert("Data Saved Successfully");
+							})
+							.catch((error) => {
+							console.error("Error:",error);
+							});
+						}
+					}
+				</script>
+</body>
+</html>
+
+

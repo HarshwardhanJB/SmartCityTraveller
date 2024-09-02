@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AddMoreDetails</title>
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="./assets/css/vendorstyle.css">
+</head>
+
+<body>
+    <div class="main">
+        <section class="signup">
+            <h2 class="form-title">Add More Information</h2>
+            <div class="container">
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <h4 class="form-title">Personal details</h4>
+                        <form class="register-form" id="register-form">
+                            <b>First Name</b>
+							<div class="form-group">
+								<label for="fname"></label> 
+                                <input type="text" name="fname" id="fname" placeholder="Your Name" />
+							</div>
+                            <b>Last Name</b>
+                            <div class="form-group">
+                                <label for="lname"></label>
+                                <input type="text" name="lname" id="lname" placeholder="Your Full Name"/>
+                            </div>
+                            <b>Aadhaar Number</b>
+                            <div class="form-group">
+                                <label for="ano"></label>
+                                <input type="text" name="ano" id="ano" placeholder="Enter Aadhar Card No"/>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="container1">
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <h4 class="form-title">Contact Details</h4>
+                        <form  class="register-form"
+							id="register-form">
+                            <b>Email</b>
+							<div class="form-group">
+								<label for="email"></label> 
+                                    <input type="email" name="email" id="email" placeholder="your@gmail.com" />
+							</div>
+                            <b>Address</b>
+                            <div class="form-group">
+                                <label for="add"></label>
+                                <input type="text" name="add" id="add" placeholder="Your Full Name"/>
+                            </div>
+                            <b>Contact No</b>
+                            <div class="form-group">
+								<label for="contact"></label>
+								<input type="text" name="contact" id="contact" placeholder="Contact no" />
+							</div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container1">
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <h4 class="form-title">Business Details</h4>
+                        <form class="register-form"
+							id="register-form">
+                            <b>Email Address</b>
+							<div class="form-group">
+								<label for="bemail"></label> 
+                                    <input type="email" name="bemail" id="bemail" placeholder="your@company.com" />
+							</div>
+                            <b>Address</b>
+                            <div class="form-group">
+                                <label for="badd"></label>
+                                <input type="text" name="badd" id="badd" placeholder="Enter the Address"/>
+                            </div>
+                            <b>Contact No</b>
+                            <div class="form-group">
+								<label for="bcontact"></label>
+								<input type="number" name="bcontact" id="bcontact"
+									placeholder="Contact no" />
+							</div>
+                            <b>Years in Business</b>
+                            <div class="form-group">
+                                <label for="byear"></label>
+                                <input type="number" name="byear" id="byear" placeholder="Years"/>
+                            </div>
+                            <div class="form-group form-button">
+								<input type="submit" name="signup" id="signup"
+									class="form-submit" value="Save"  onclick="saveDetails()"/>
+                                <input type="submit" name="reset" id="reset"
+                                            class="form-submit" value="Reset"/>
+							</div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+	<script>
+		function saveDetails(){
+			const fname = document.getElementById("fname");
+			const lname = document.getElementById("lname");
+			const aaNo = document.getElementById("ano");
+			const add = doc.getElementById("badd");
+			const cont = document.getElementById("contact");
+			const bemail = document.getElementById("bemail");
+			const badd = document.getElementById("badd");
+			const bcont = document.getElementById("bcontact");
+			const year = document.getElementById("byear");
+			console.log("Hii");
+			if(aaNo=='' || fname=='' || lname=='' || add=='' || cont=='' || badd=='' || bcont=='' || year=='')
+			{
+				alert("First name or last name or Aadhaar No or Address or contact no or year is required...!");
+			}
+			else{
+				fetch("/api/Dtsave",{
+				method: "POST",
+				headers:{'content-type':'application/json'},
+				body: JSON.stringify(
+				{
+					fname,
+					lname,
+					aaNo,
+					add,
+					cont,
+					bemail,
+					badd,
+					bcont,
+					year
+				}
+				)
+				})
+				.then(response => response.json())
+				.then(data => {
+				console.log("success");
+				alert("Data Saved Successfully");
+				})
+				.catch((error) => {
+				console.error("Error:",error);
+				});
+			}
+		}
+	</script>
+   
+</body>
+</html>
